@@ -6,7 +6,11 @@ const jwt =require('jsonwebtoken');
 const User = require('../../models/User');
 const {check, validationResult} = require('express-validator');
 
-
+router.get('/create', (req, res) =>{
+ User.find()
+     .sort({ date: -1})
+     .then(users => res.json(users))
+});
 
 
 router.post(
@@ -32,6 +36,8 @@ router.post(
      const {email,password} = req.body;
 
      const candidate =await User.findOne({email});
+
+     //const arr = await User.getAll();
 
      if(candidate){
       return  res.status(400).json({message: 'This user already exists'})
@@ -90,6 +96,9 @@ router.post(
      res.status(500).json({message: 'Something is wrong, try again'})
     }
    });
+
+
+/////////////////////
 
 
 module.exports=router;
