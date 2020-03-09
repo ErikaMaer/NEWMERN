@@ -3,17 +3,6 @@ import {useHttp} from "../hooks/http.hook";
 import TodoList from "../Todo/TodoList";
 
 export const CreatePage=() =>{
-   /* const {loading, request, error, clearError} = useHttp();
-    const [form, setForm] = useState({
-       id:'', Name:'', email: ''
-    })
-
-    const addHandler = async () => {
-        try {
-            const arr = await request('/api/items/create', 'GET', {...form})
-        } catch (e) {
-        }
-    }*/
    const[users, setUsers] = useState([]);
    const{request}=useHttp();
 
@@ -34,9 +23,8 @@ useEffect(() => {
             <table className="highlight">
                 <thead>
                 <tr>
-                    <th>Select all /<br/>deselect all</th>
+                    <th>Select all /<br/>deselect all </th>
                     <th>ID</th>
-                    <th>Name</th>
                     <th>Email</th>
                     <th>Registration date</th>
                     <th>Last login date</th>

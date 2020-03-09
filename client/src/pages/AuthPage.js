@@ -44,15 +44,16 @@ export const AuthPage = () => {
 
 
     return (
+
         <div className="row">
-            <div className="col.s6.offset-s3">
-                <h1>Project</h1>
-                <div className="card blue darken-1">
+            <div className="card col s6 offset-s3">
+                <div className="card  purple darken-1">
                     <div className="card-content white-text">
                         <span className="card-title">Authorization</span>
-                        <div>
 
-                            <div className="input-field">
+
+                            <div className="input-field ">
+
                                 <input placeholder="Enter your email address"
                                        id="email"
                                        type="text"
@@ -62,6 +63,7 @@ export const AuthPage = () => {
                                 />
                                 <label htmlFor="first_name">Email</label>
                             </div>
+
 
                             <div className="input-field">
                                 <input placeholder="Enter the password"
@@ -74,11 +76,9 @@ export const AuthPage = () => {
                                 <label htmlFor="first_name">Password</label>
                             </div>
 
-
-                        </div>
                         <div className="card-action">
                             <button
-                                className="btn yellow darken-4"
+                                className="btn orange darken-4"
                                 style={{marginRight: 10}}
                                 disabled={loading}
                                 onClick={loginHandler}
@@ -86,7 +86,7 @@ export const AuthPage = () => {
                                 Sign in
                             </button>
                             <button
-                                className="btn grey lighten-1 black-text"
+                                className="btn teal lighten-3 black-text"
                                 onClick={registerHandler}
                                 disabled={loading}
                             >
@@ -97,6 +97,6 @@ export const AuthPage = () => {
                 </div>
 
             </div>
-        </div>
+            </div>
     )
 };

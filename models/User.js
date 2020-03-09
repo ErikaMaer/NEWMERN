@@ -10,6 +10,10 @@ const UserSchema =new Schema({
     password:{
         type: String,
         required: true
+    },
+    regDate:{
+        type: String,
+        default: null
     }
 });
 

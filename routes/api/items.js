@@ -37,14 +37,13 @@ router.post(
 
      const candidate =await User.findOne({email});
 
-     //const arr = await User.getAll();
 
      if(candidate){
       return  res.status(400).json({message: 'This user already exists'})
      }
      const hashedPassword= await bcrypt.hash(password, 12);
-     const user = new User({email,password:hashedPassword});
-
+     const regDate = new Date().toLocaleString("ru");
+     const user = new User({email,password:hashedPassword, regDate});
      await user.save();
 
      res.status(201).json({message:'The user is created'})
