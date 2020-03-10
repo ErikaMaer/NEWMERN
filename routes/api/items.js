@@ -72,6 +72,8 @@ router.post(
       })
      }
 
+
+
      const {email, password} = req.body;
 
      const user = await User.findOne({email});
@@ -81,15 +83,27 @@ router.post(
      }
 
      const isMatch = await bcrypt.compare(password, user.password);
-     if (!isMatch){
-      return res.status(400).json({message:'Invalid password, try again'})
+
+
+     if (!isMatch) {
+      return res.status(400).json({message: 'Invalid password, try again'})
      }
-     const token = jwt.sign(
-         {userId: user.id},
-         config.get('jwtSecret'),
-         { expiresIn: '1h'}
-     );
-     res.json({token, userId: user.id})
+
+
+      const logDate = new Date().toLocaleString("ru");
+      await user.update({logDate});
+
+
+
+
+      const token = jwt.sign(
+          {userId: user.id},
+          config.get('jwtSecret'),
+          {expiresIn: '1h'},
+      );
+      res.json({token, userId: user.id})
+
+
 
     } catch (e) {
      res.status(500).json({message: 'Something is wrong, try again'})

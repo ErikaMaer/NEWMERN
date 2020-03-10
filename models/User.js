@@ -14,6 +14,17 @@ const UserSchema =new Schema({
     regDate:{
         type: String,
         default: null
+    },
+    logDate:{
+        type: String,
+        default: null
+    },
+    Status:{
+        type: String
+    },
+    Checked:{
+        type: Boolean,
+        default: false
     }
 });
 
@@ -21,15 +32,4 @@ module.exports = User = mongoose.model('user', UserSchema);
 
 
 
-/*const ItemSchema =new Schema({
-    name:{
-        type:String,
-        required:true,
-    } ,
-    date:{
-        type: Date,
-        default: Date.now
-    }
-});
-*/
 
