@@ -1,8 +1,7 @@
-import React, {useContext} from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 
 function TodoItem({todo, onChange}) {
-    console.log(todo)
  return (
      <tr>
       <td> <label>

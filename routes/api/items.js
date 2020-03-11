@@ -6,6 +6,41 @@ const jwt =require('jsonwebtoken');
 const User = require('../../models/User');
 const {check, validationResult} = require('express-validator');
 
+
+// router.delete('/delete',(req, res) => {
+//
+//   const {_id} = req.body;
+//   const del =User.findOne({_id});
+//    delete(del)})
+
+router.delete('/delete',(req,res) =>{
+ const {user} = req.body;
+ console.log(user+" my user");
+ console.log(req.body+"rec.body");
+ User.findByIdAndDelete(req.params._id)
+     .then (() => res.json('User deleted'))
+     .catch(err => res.status(400).json('Error:'+err))
+});
+
+// router.delete('/:id',(req,res) =>{
+//  User.findByIdAndDelete(req.params._id)
+//      .then (() => res.json({success:true}))
+//      .catch(err => res.status(404).json({success:false}))
+// });
+
+
+//  }catch (e)
+// {
+//  res.status(500).json({message: 'Something is wrong, try again'})
+// }
+// )
+
+
+
+
+
+
+
 router.get('/create', (req, res) =>{
  User.find()
      .sort({ date: -1})
@@ -111,7 +146,6 @@ router.post(
    });
 
 
-/////////////////////
 
 
 module.exports=router;

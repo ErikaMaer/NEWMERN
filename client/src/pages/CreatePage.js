@@ -1,7 +1,8 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useHttp} from "../hooks/http.hook";
 import TodoList from "../Todo/TodoList";
-// import Context from "../contextT/CreateContext";
+
+
 
 export const CreatePage = () => {
     let [users, setUsers] = useState([]);
@@ -9,7 +10,7 @@ export const CreatePage = () => {
 
     const addHandler = useCallback(async () => {
         try {
-            const arr = await request('/api/items/create', 'GET', /*{...form}*/);
+            const arr = await request('/api/items/create', 'GET');
             setUsers(arr);
         } catch (e) {
         }
@@ -18,6 +19,9 @@ export const CreatePage = () => {
     useEffect(() => {
         addHandler()
     }, [addHandler]);
+
+
+
 
     function toggleTodo(_id) {
         setUsers(users.map(user => {
@@ -30,23 +34,32 @@ export const CreatePage = () => {
 
     }
 
-     async function deleteUser(user) {
-        console.log("dltusr"+user)
-        if (user.Checked){
-            await user.deleteOne(user._id)
+    const deleteUser = async (user) => {
+        console.log(user+"aaaaaaaaaaaaaaaaaaaaaaaaa")
+        try {
+            await request('/api/items/delete', 'DELETE', {user});
+        } catch (e) {
+
         }
-        return user
-    }
+   }
+
+
+    // async function deleteUser() {
+    //     //console.log("dltusr"+user)
+    //     //if (user.Checked){
+    //     setUsers(users.filter(todo => !todo.Checked))
+    //    await request('http://localhost:3000/api/items/', 'DELETE');}
+    // //return user
+
 
     function deleteToolbar() {
-        //setUsers(users.filter(todo => !todo.Checked))
-        setUsers(users.map(deleteUser))
+      //  setUsers(users.filter(todo => !todo.Checked))
+      setUsers(users.map(deleteUser))
     }
 
 
     return (
 
-        // <Context.Provider value ={{deleteToolbar}}>
         <div>
 
 
@@ -83,7 +96,6 @@ export const CreatePage = () => {
             </table>
 
         </div>
-        // </Context.Provider>
     )
 
 };
