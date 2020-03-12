@@ -20,7 +20,8 @@ const UserSchema =new Schema({
         default: null
     },
     Status:{
-        type: String
+        type: String,
+        default: null
     },
     Checked:{
         type: Boolean,

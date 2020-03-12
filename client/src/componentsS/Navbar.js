@@ -16,12 +16,14 @@ export const Navbar = () =>{
 
      return (
      <nav>
-     <div className="nav-wrapper" style ={{ padding: '0 2rem'}}>
-     <span className="brand-logo">Project</span>
+     <div className="nav-wrapper purple darken-1" style ={{ padding: '0 2rem'}}>
+         <div className="nav-wrapper purple darken-1">
+     <span className="brand-logo">Users</span>
      <ul id="nav-mobile" className="right hide-on-med-and-down">
          <li><a href ="/" onClick={logoutHandler}>Logout</a></li>
 
      </ul>
+     </div>
      </div>
      </nav>
 

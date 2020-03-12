@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-function TodoItem({todo, onChange}) {
+ function TodoItem({todo, onChange, /*checkedTest*/}) {
+
  return (
      <tr>
       <td> <label>
           <input type="checkbox"
-                 onChange ={() => onChange(todo._id)} checked={todo.Checked}/>
+                 onChange ={() => onChange(todo._id)} /*checked={checkedTest}*//>
           <span></span>
       </label> </td>
       <td>{todo._id}</td>
