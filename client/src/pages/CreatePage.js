@@ -3,11 +3,9 @@ import {useHttp} from "../hooks/http.hook";
 import TodoList from "../Todo/TodoList";
 
 
-
-
 export const CreatePage = () => {
     let [users, setUsers] = useState([]);
-    const [checkedTest, setCheckedTest] = useState(false)
+   // const [checkedTest, setCheckedTest] = useState(false)
     const {request} = useHttp();
 
     const addHandler = useCallback(async () => {
@@ -23,97 +21,66 @@ export const CreatePage = () => {
     }, [addHandler]);
 
 
-
-
-    function toggleTodo(_id, /*event*/) {
+    function toggleTodo(_id) {
         setUsers(users.map(user => {
             if (user._id === _id) {
                 user.Checked=!user.Checked
-               // event.target.checked= setCheckedTest(!checkedTest)
             }
             return user
         }))
     }
 
 
-    const deleteUser = async (user) => {
-        console.log(user+"aaaaaaaaaaaaaaaaaaaaaaaaa")
-        try {
-            await request('/api/items/delete', 'DELETE', {user});
-        } catch (e) {
-
-        }
-   }
-
-
-    // async function deleteUser() {
-    //     //console.log("dltusr"+user)
-    //     //if (user.Checked){
-    //     setUsers(users.filter(todo => !todo.Checked))
-    //    await request('http://localhost:3000/api/items/', 'DELETE');}
-    // //return user
-
-
-    function deleteToolbar() {
-      //  setUsers(users.filter(todo => !todo.Checked))
-      setUsers(users.map(deleteUser))
-    }
-
-   // const blockUser = async (user)=> {
-   //     try {
-   //         await request('/api/items/login', 'POST')
-   //         user.update()
-   //        user.Status ="Block"
-   //     } catch (e) {
-   //
-   //     }
-   //     }
-   function blockUser(user) {
-       // user.update()
-       // request('/api/items/login', 'POST')
-
-       user.Status ="Block"
+    const blockHandler = async (userStatus) => {
+        const checkedUsers = getCheckedUsers();
+        for(let checkedUser of checkedUsers) {
+            try {
+                await request('/api/items/create/block', 'POST', {id : checkedUser._id, status: userStatus})
+            } catch (e) {
             }
+        }
+        setUsers(await request('/api/items/create', 'GET'))
+    };
+
+    const deleteHandler = async () => {
+        const checkedUsers = getCheckedUsers();
+        for(let checkedUser of checkedUsers) {
+            try {
+                 await request('/api/items/create/delete', 'DELETE', {id : checkedUser._id})
+            } catch (e) {
+            }
+        }
+        setUsers(await request('/api/items/create', 'GET'))
+    };
 
 
-
-    function unlockUser(user) {
-
-                if (user.Checked) {
-                    user.Status = "Unlock"
-                }
-        return user
-
-
+    function getCheckedUsers() {
+        return users.filter(user => user.Checked === true)
     }
 
-    // const onCheckedAll = (event) => {
-    //     setCheckedTest(event.target.checked);
-    //
-    // }
 
-
+    function onCheckedAll() {
+        setUsers(users.map(users => {
+            users.Checked = !users.Checked
+            return users
+        }))
+    }
 
 
     return (
-
         <div>
-
-
             <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
                 <button type="button" className="btn btn-secondary" style={{marginRight: 10}}
-                        onClick={() => blockUser()}
+                        onClick={() => blockHandler("block")}
                 >Block</button>
                 <button type="button" className="btn btn-secondary" style={{marginRight: 10}}
-                        onClick={() => unlockUser()}
+                        onClick={() => blockHandler(null)}
                 >Unlock</button>
                 <button type="button" className="btn btn-secondary" style={{marginRight: 10}}
-                        onClick={() => deleteToolbar()}>
-
+                        onClick={deleteHandler}>
                     <i className="material-icons">delete</i></button>
-
             </div>
 
 
@@ -123,7 +90,7 @@ export const CreatePage = () => {
                     <th>Select all /<br/>deselect all <br/>
                         <label>
                             <input type="checkbox"
-             //                      onClick={onCheckedAll}
+                                onClick={() =>onCheckedAll()}
                             /><span></span>
                         </label>
                     </th>
@@ -134,12 +101,10 @@ export const CreatePage = () => {
                     <th>Status</th>
                 </tr>
                 </thead>
-                <TodoList todos={users} onToggle={toggleTodo} checkedTest={checkedTest}/>
+                <TodoList todos={users} onToggle={toggleTodo} />
             </table>
-
         </div>
     )
-
 };
 
 

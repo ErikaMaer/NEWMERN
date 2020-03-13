@@ -8,7 +8,7 @@ function TodoList(props) {
 return(
     <tbody>
     {props.todos.map(todo => {
-        return <TodoItem todo={todo} key={todo._id} onChange={props.onToggle} /*checkedTest={props.checkedTest}*//>
+        return <TodoItem todo={todo} key={todo._id} onChange={props.onToggle} />
     })}
     </tbody>
 )

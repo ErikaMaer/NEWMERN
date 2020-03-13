@@ -7,46 +7,25 @@ const User = require('../../models/User');
 const {check, validationResult} = require('express-validator');
 
 
-// router.delete('/delete',(req, res) => {
-//
-//   const {_id} = req.body;
-//   const del =User.findOne({_id});
-//    delete(del)})
-
-router.delete('/delete',(req,res) =>{
- const {user} = req.body;
- console.log(user+" my user");
- console.log(req.body+"rec.body");
- User.findByIdAndDelete(req.params._id)
-     .then (() => res.json('User deleted'))
-     .catch(err => res.status(400).json('Error:'+err))
+router.post('/create/block', async (req, res) =>{
+ const userId = req.body.id;
+ const userStatus = req.body.status;
+ const user = await User.findOne({_id: userId});
+ await user.update({Status: userStatus});
+ res.json({user})
 });
 
-// router.delete('/:id',(req,res) =>{
-//  User.findByIdAndDelete(req.params._id)
-//      .then (() => res.json({success:true}))
-//      .catch(err => res.status(404).json({success:false}))
-// });
-
-
-//  }catch (e)
-// {
-//  res.status(500).json({message: 'Something is wrong, try again'})
-// }
-// )
-
-
-
-
-
-
+router.delete('/create/delete', async (req, res) =>{
+ const userId = req.body.id;
+ const user = await User.remove({_id: userId});
+ res.json({user})
+});
 
 router.get('/create', (req, res) =>{
  User.find()
      .sort({ date: -1})
      .then(users => res.json(users))
 });
-
 
 router.post(
    '/register',
@@ -57,8 +36,6 @@ router.post(
    ], async (req,res) => {
     try {
 
-
-
      const errors =validationResult(req);
 
      if(!errors.isEmpty()){
@@ -67,11 +44,8 @@ router.post(
        message:'Invalid data during registration'
       })
      }
-
      const {email,password} = req.body;
-
      const candidate =await User.findOne({email});
-
 
      if(candidate){
       return  res.status(400).json({message: 'This user already exists'})
@@ -80,15 +54,11 @@ router.post(
      const regDate = new Date().toLocaleString("ru");
      const user = new User({email,password:hashedPassword, regDate});
      await user.save();
-
      res.status(201).json({message:'The user is created'})
-
-
     } catch (e) {
      res.status(500).json({ message: 'Something is wrong, try again'})
     }
    });
-
 
 router.post(
    '/login',
@@ -107,29 +77,23 @@ router.post(
       })
      }
 
-
-
      const {email, password} = req.body;
-
      const user = await User.findOne({email});
-
      if(!user){
       return res.status(400).json({message:'The user is not found'})
      }
-
      const isMatch = await bcrypt.compare(password, user.password);
-
 
      if (!isMatch) {
       return res.status(400).json({message: 'Invalid password, try again'})
      }
 
+      if(user.Status==="block"){
+       return res.status(400).json({message: 'You are blocked'})
+      }
 
       const logDate = new Date().toLocaleString("ru");
       await user.update({logDate});
-
-
-
 
       const token = jwt.sign(
           {userId: user.id},
@@ -137,17 +101,10 @@ router.post(
           {expiresIn: '1h'},
       );
       res.json({token, userId: user.id})
-
-
-
     } catch (e) {
      res.status(500).json({message: 'Something is wrong, try again'})
     }
    });
-
-
-
-
 module.exports=router;
 
 
