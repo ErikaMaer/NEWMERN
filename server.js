@@ -9,7 +9,6 @@ const app = express();
 //Bodyparser Middleware
  app.use(bodyParser.json());
 
-//app.use(express.json({extended:true}))
 
 //DB Config
 const db = require('./config/keys').mongoURI;

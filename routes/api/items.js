@@ -32,7 +32,7 @@ router.post(
    [
     check('email','Invalid email').isEmail(),
     check('password', 'The minimum password length is 6 symbols')
-        .isLength({min:6})
+        .isLength({min:3})
    ], async (req,res) => {
     try {
 
